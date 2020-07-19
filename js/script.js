@@ -9,20 +9,22 @@ project 1 - A Random Quote Generator
 
 /*** 
  * `quotes` array 
+ * * each quote is an object with at least two string properties: 'quote' with the text of a quotation, and 'source' with the author
+ * * an optional property of 'citation' may have a book, movie, or other work being cited
+ * * an optional property of 'year' includes a year string
 ***/
 
 let quotes = [
   {
-    quote: "Victory awaits him who has everything in order, luck some people call it. Defeat is certain for him who has neglected to take necessary precautions in time; this is called bad luck.",
+    quote: "Victory awaits him who has everything in order, luck some people call it.",
     source: "Roald Amundsen",
     citation: "Sydpolen (The South Pole)",
     year: "1912"
   },
   {
-    quote: "It is not the critic who counts, not the man who points out how the strong man stumbled, or where the doer of deeds could have done better. The credit belongs to the man who is actually in the arena; whose face is marred by the dust and sweat and blood; who strives valiantly; who errs and comes short again and again, because there is no effort without error or shortcoming; who knows the great enthusiasms, the great devotions and spends himself in a worthy cause; who at the best, knows in the end the triumph of high achievement, and who, at worst, if he fails, at least fails while daring greatly; so that his place shall never be with those cold and timid souls who know neither victory or defeat.",
-    source: "Theodore Roosevelt",
-    citation: "Citizenship in a Republic",
-    year: "1910"
+    quote: "You can observe a lot by just watching.",
+    source: "Yogi Berra",
+    year: "2008"
   },
   {
     quote: "Success is not final, failure is not fatal: it is the courage to continue that counts.",
@@ -36,23 +38,51 @@ let quotes = [
     year: "2015"
   },
   {
-    quote: "Look to this day! For it is life, the very life of life. In its brief course lie all the verities and realities of your existence: the bliss of growth; the glory of action; the splendor of achievement. For yesterday is but a dream, and tomorrow is only a vision. But today, well lived, makes every yesterday a dream of happiness, and every tomorrow a vision of hope. Look well, therefore to this day! Such is the salutation to the dawn.",
-    source: "Kalidasa",
-    citation: "Salutation to the Dawn"
+    quote: "In theory there is no difference between theory and practice; in practice there is.",
+    source: "Walter J. Savitch",
+    citation: "Pascal: An Introduction to the Art and Science of Programming",
+    year: "1984"
   }
 ];
 
 /***
  * `getRandomQuote` function
+ * * creates a variable 'randomNum' where a random number from Math.random() is generated and multiplied by the length of the quotes array
+ * * the result is rounded down with Math.floor() so that it can only be a nunmber between 0 and ( quotes.length - 1 )
+ * * the function returns an object from the quotes array with index 'randomNum' (i.e. a random quote from the quotes array)
 ***/
 
-
+const getRandomQuote = () => {
+  let randomNum = Math.floor( Math.random() * quotes.length );
+  return quotes[randomNum];
+}
 
 /***
  * `printQuote` function
+ * * calls getRandomQuote to get a randomQuote 
+ * * creates an HTML string with randomQuote properties, using conditional logic for the two optional properties of 'citation' and 'year'
+ * * returns the HTML rendering the randomQuote with the corresponding class attributes and tags for each property of the quote object, and injects it in the page
 ***/
 
-
+const printQuote = () => {
+  let randomQuote = getRandomQuote();
+  let html = `
+    <p class="quote">${randomQuote.quote}</p>
+    <p class="source">${randomQuote.source}
+  `;
+  if (randomQuote.citation) {
+    html += `
+      <span class="citation">${randomQuote.citation}</span>
+    `;
+  }
+  if (randomQuote.year) {
+    html += `
+      <span class="year">${randomQuote.year}</span>
+    `;
+  }
+  html += `</p>`;
+  return document.getElementById('quote-box').innerHTML = html;
+}
 
 /***
  * click event listener for the print quote button
